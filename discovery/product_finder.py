@@ -194,8 +194,11 @@ SEED_PRODUCTS = [
         "reviews_count": 185000,
         "amazon_url": "https://amazon.com/dp/B0764HS4SL",
         "affiliate_link": f"https://amazon.com/dp/B0764HS4SL?tag={AFFILIATE_TAG}",
-        "category": "kitchen gadgets",
-        "image_urls": "[]",
+        "image_urls": [
+            "https://m.media-amazon.com/images/I/81sQQQ12RML._AC_SL1500_.jpg",
+            "https://m.media-amazon.com/images/I/71wLpQ2e4aL._AC_SL1500_.jpg",
+            "https://m.media-amazon.com/images/I/71rIeXb9h2L._AC_SL1500_.jpg"
+        ],
         "features": "12 blades, 7-in-1 chopper, dishwasher safe, built-in strainer",
         "task": "chopping vegetables",
         "old_method": "a knife and cutting board",
@@ -209,8 +212,11 @@ SEED_PRODUCTS = [
         "reviews_count": 52000,
         "amazon_url": "https://amazon.com/dp/B0CMXM868T",
         "affiliate_link": f"https://amazon.com/dp/B0CMXM868T?tag={AFFILIATE_TAG}",
-        "category": "kitchen organization",
-        "image_urls": "[]",
+        "image_urls": [
+            "https://m.media-amazon.com/images/I/71I3v-1A1WL._AC_SL1500_.jpg",
+            "https://m.media-amazon.com/images/I/71fL9aD0m5L._AC_SL1500_.jpg",
+            "https://m.media-amazon.com/images/I/81y5ZkI9P1L._AC_SL1500_.jpg"
+        ],
         "features": "Heat resistant, fits all stoves, stops crumbs and spills",
         "task": "cleaning between the stove and counter",
         "old_method": "sticking your hand in the gap",
@@ -224,8 +230,11 @@ SEED_PRODUCTS = [
         "reviews_count": 34000,
         "amazon_url": "https://amazon.com/dp/B0D59ZLGRR",
         "affiliate_link": f"https://amazon.com/dp/B0D59ZLGRR?tag={AFFILIATE_TAG}",
-        "category": "home organization",
-        "image_urls": "[]",
+        "image_urls": [
+            "https://m.media-amazon.com/images/I/71xMh-zS3eL._AC_SL1500_.jpg",
+            "https://m.media-amazon.com/images/I/71P+0r81xHL._AC_SL1500_.jpg",
+            "https://m.media-amazon.com/images/I/71tP0a9o1vL._AC_SL1500_.jpg"
+        ],
         "features": "2-tier expandable, fits any cabinet, adjustable height",
         "task": "organizing under the sink",
         "old_method": "piling everything under the sink",
@@ -239,8 +248,11 @@ SEED_PRODUCTS = [
         "reviews_count": 28000,
         "amazon_url": "https://amazon.com/dp/B0B7RSV894",
         "affiliate_link": f"https://amazon.com/dp/B0B7RSV894?tag={AFFILIATE_TAG}",
-        "category": "cleaning gadgets",
-        "image_urls": "[]",
+        "image_urls": [
+            "https://m.media-amazon.com/images/I/81xG-Y3+hXL._AC_SL1500_.jpg",
+            "https://m.media-amazon.com/images/I/71T1mN6Zz6L._AC_SL1500_.jpg",
+            "https://m.media-amazon.com/images/I/71B9W+D2oOL._AC_SL1500_.jpg"
+        ],
         "features": "Cordless, 8 brush heads, IPX7 waterproof, 90min battery",
         "task": "scrubbing the bathroom",
         "old_method": "scrubbing on your hands and knees",
@@ -255,8 +267,12 @@ SEED_PRODUCTS = [
         "amazon_url": "https://amazon.com/dp/B0C4FHXMB1",
         "affiliate_link": f"https://amazon.com/dp/B0C4FHXMB1?tag={AFFILIATE_TAG}",
         "category": "kitchen organization",
-        "image_urls": "[]",
-        "features": "Magnetic jars, fits any surface, clear labels included",
+        "image_urls": [
+            "https://m.media-amazon.com/images/I/71wLpQ2e4aL._AC_SL1500_.jpg",
+            "https://m.media-amazon.com/images/I/81xG-Y3+hXL._AC_SL1500_.jpg",
+            "https://m.media-amazon.com/images/I/71xMh-zS3eL._AC_SL1500_.jpg"
+        ],
+        "features": "Removes tough stains, lightweight, easy to store",
         "task": "finding the right spice while cooking",
         "old_method": "digging through a cluttered spice cabinet",
         "result": "every spice visible and within reach",

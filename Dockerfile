@@ -1,9 +1,9 @@
 # Use Python 3.10 slim as base
 FROM python:3.10-slim
 
-# Install FFmpeg (required for video processing)
+# Install FFmpeg and fonts (required for video processing and drawtext)
 RUN apt-get update && \
-    apt-get install -y ffmpeg cron tzdata && \
+    apt-get install -y ffmpeg fonts-liberation cron tzdata && \
     rm -rf /var/lib/apt/lists/*
 
 # Set timezone to EST (or any preferred timezone for the 9AM trigger)

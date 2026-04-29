@@ -33,6 +33,8 @@
     },
     {
       "parameters": {
+        "resource": "video",
+        "operation": "upload",
         "title": "={{$node[\"Receive Video\"].json[\"body\"][\"title\"]}}",
         "description": "={{$node[\"Receive Video\"].json[\"body\"][\"description\"]}}\\n\\n{{$node[\"Receive Video\"].json[\"body\"][\"affiliate_link\"]}}",
         "tags": "={{$node[\"Receive Video\"].json[\"body\"][\"tags\"]}}",
