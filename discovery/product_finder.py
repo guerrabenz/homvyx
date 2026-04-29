@@ -195,9 +195,9 @@ SEED_PRODUCTS = [
         "amazon_url": "https://amazon.com/dp/B0764HS4SL",
         "affiliate_link": f"https://amazon.com/dp/B0764HS4SL?tag={AFFILIATE_TAG}",
         "image_urls": [
-            "https://m.media-amazon.com/images/I/81sQQQ12RML._AC_SL1500_.jpg",
-            "https://m.media-amazon.com/images/I/71wLpQ2e4aL._AC_SL1500_.jpg",
-            "https://m.media-amazon.com/images/I/71rIeXb9h2L._AC_SL1500_.jpg"
+            "https://m.media-amazon.com/images/I/71oBAWC4awL.jpg",
+            "https://m.media-amazon.com/images/I/71mV6WAoYAL.jpg",
+            "https://m.media-amazon.com/images/I/71FkZZdOIXL.jpg"
         ],
         "features": "12 blades, 7-in-1 chopper, dishwasher safe, built-in strainer",
         "task": "chopping vegetables",
