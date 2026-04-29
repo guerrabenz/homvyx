@@ -210,7 +210,18 @@ async def generate_tts(text: str, output_path: str, voice: str = None) -> str:
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     communicate = edge_tts.Communicate(text, voice, rate=rate)
-    await communicate.save(output_path)
+    
+    try:
+        await communicate.save(output_path)
+    except Exception as e:
+        print(f"  [tts] edge-tts error ({e}). Falling back to gTTS...")
+        try:
+            from gtts import gTTS
+            tts = gTTS(text=text, lang='en', tld='com')
+            tts.save(output_path)
+        except ImportError:
+            print("  [tts] gTTS not installed. Unable to generate TTS.")
+            return ""
 
     size_kb = os.path.getsize(output_path) // 1024
     print(f"  [tts] Generated: {os.path.basename(output_path)} ({voice}, {size_kb} KB)")
