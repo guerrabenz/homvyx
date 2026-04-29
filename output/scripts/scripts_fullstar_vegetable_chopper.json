@@ -1,0 +1,92 @@
+{
+  "product": {
+    "name": "Fullstar Vegetable Chopper",
+    "price": 24.99,
+    "rating": 4.5,
+    "reviews_count": 185000,
+    "affiliate_link": "https://amazon.com/dp/B0764HS4SL?tag=homvyx-20"
+  },
+  "generated_at": "2026-04-29T13:58:29.681261",
+  "scripts": [
+    {
+      "framework": "hook_problem_solution_cta",
+      "hook_type": "social_proof",
+      "duration_sec": 30,
+      "sections": {
+        "hook": {
+          "text": "This $24 gadget has 185,000 five-star reviews.",
+          "duration": 3
+        },
+        "problem": {
+          "text": "If you're tired of wasting time on chopping vegetables, you're not alone.",
+          "duration": 7
+        },
+        "solution": {
+          "text": "The Fullstar Vegetable Chopper handles everything. 12 blades, 7-in-1 chopper, dishwasher safe, built-in strainer. Best $24 I ever spent.",
+          "duration": 15
+        },
+        "cta": {
+          "text": "Found the link for you — check bio! 🎯",
+          "duration": 5
+        }
+      },
+      "full_script": "This $24 gadget has 185,000 five-star reviews.\n\nLet's be honest — chopping vegetables takes way too long.\n\nMeet the Fullstar Vegetable Chopper. It does 12 blades, 7-in-1 chopper, dishwasher safe, built-in strainer — and 185,000 people already gave it 5 stars.\n\nFound the link for you — check bio! 🎯",
+      "platform": "youtube",
+      "caption": "Fullstar Vegetable Chopper — $24 on Amazon 🔥\n\n👇 GET YOURS: [Link in description]\n\n#ad #amazonassociate\n\n#kitchenhacks #amazonmusthaves #musthaves #kitchengadgets #homeorganization",
+      "description": "🔥 Fullstar Vegetable Chopper\n\n💰 Price: $24\n⭐ Rating: 4.5/5 (185,000 reviews)\n\n🛒 Get it here: https://amazon.com/dp/B0764HS4SL?tag=homvyx-20\n\n12 blades, 7-in-1 chopper, dishwasher safe, built-in strainer\n\nAs an Amazon Associate, I earn from qualifying purchases.\n\n#amazonfinds #kitchenhacks #homehacks #musthaves #amazonmusthaves #kitchengadgets #homeorganization #productreview",
+      "hashtags": "#kitchenhacks #amazonmusthaves #musthaves #kitchengadgets #homeorganization"
+    },
+    {
+      "framework": "aida",
+      "hook_type": "direct",
+      "duration_sec": 15,
+      "sections": {
+        "attention": {
+          "text": "Save this video for when you need it.",
+          "duration": 2
+        },
+        "interest": {
+          "text": "If you chopping vegetables, this is for you.",
+          "duration": 3
+        },
+        "desire": {
+          "text": "185,000 five-star reviews. Only $24. And look what it does.",
+          "duration": 7
+        },
+        "action": {
+          "text": "Link in bio to grab yours! 🔗",
+          "duration": 3
+        }
+      },
+      "full_script": "Save this video for when you need it.\n\nIf you chopping vegetables, this is for you.\n\n185,000 five-star reviews. Only $24. And look what it does.\n\nLink in bio to grab yours! 🔗",
+      "platform": "tiktok",
+      "caption": "Fullstar Vegetable Chopper Only $24 🤯 #ad #amazonassociate #fyp #amazonfinds #musthaves #homeorganization #productreview",
+      "description": "",
+      "hashtags": "#fyp #amazonfinds #musthaves #homeorganization #productreview"
+    },
+    {
+      "framework": "pas",
+      "hook_type": "problem_focused",
+      "duration_sec": 20,
+      "sections": {
+        "problem": {
+          "text": "Is your kitchen a mess? Chopping vegetables shouldn't be this hard.",
+          "duration": 5
+        },
+        "agitate": {
+          "text": "And every time you try to fix it, you end up spending hours and it STILL looks the same.",
+          "duration": 5
+        },
+        "solve": {
+          "text": "This Fullstar Vegetable Chopper fixes it in under 2 minutes. $24. Get yours from the link in bio! 👆",
+          "duration": 10
+        }
+      },
+      "full_script": "Is your kitchen a mess? Chopping vegetables shouldn't be this hard.\n\nAnd every time you try to fix it, you end up spending hours and it STILL looks the same.\n\nThis Fullstar Vegetable Chopper fixes it in under 2 minutes. $24. Get yours from the link in bio! 👆",
+      "platform": "instagram",
+      "caption": "🏠 Fullstar Vegetable Chopper\n\nIs your kitchen a mess? Chopping vegetables shouldn't be this hard.\n\nAnd every time you try to fix it, you end up spending hours and it STILL looks the same.\n\nThis Fullstar Vegetable Chopper fixes it in under 2 minutes. $24. Get yours from the link in bio! 👆\n\n💰 $24 on Amazon\n🔗 Link in bio!\n\n#ad #amazonassociate\n\n#foryou #amazonfinds #amazonmusthaves #musthaves #kitchengadgets #tiktokmademebuyit",
+      "description": "",
+      "hashtags": "#foryou #amazonfinds #amazonmusthaves #musthaves #kitchengadgets #tiktokmademebuyit"
+    }
+  ]
+}

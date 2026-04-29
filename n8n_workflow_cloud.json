@@ -1,0 +1,85 @@
+{
+  "name": "Homvyx Cloud YouTube Upload (Webhook)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "homvyx-upload",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Receive Video",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [200, 300],
+      "webhookId": "homvyx-upload"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$node[\"Receive Video\"].json[\"body\"][\"platform\"]}}",
+              "value2": "youtube"
+            }
+          ]
+        }
+      },
+      "id": "if-youtube",
+      "name": "Is YouTube?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [420, 300]
+    },
+    {
+      "parameters": {
+        "title": "={{$node[\"Receive Video\"].json[\"body\"][\"title\"]}}",
+        "description": "={{$node[\"Receive Video\"].json[\"body\"][\"description\"]}}\\n\\n{{$node[\"Receive Video\"].json[\"body\"][\"affiliate_link\"]}}",
+        "tags": "={{$node[\"Receive Video\"].json[\"body\"][\"tags\"]}}",
+        "categoryId": "22",
+        "privacyStatus": "public",
+        "binaryPropertyName": "video"
+      },
+      "id": "youtube-upload",
+      "name": "Upload to YouTube",
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [660, 200],
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "Po2yQOzQZg2wSKZg",
+          "name": "YouTube account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Receive Video": {
+      "main": [
+        [
+          {
+            "node": "Is YouTube?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is YouTube?": {
+      "main": [
+        [
+          {
+            "node": "Upload to YouTube",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all"
+  }
+}

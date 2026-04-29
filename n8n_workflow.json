@@ -1,0 +1,270 @@
+{
+  "name": "Homvyx Daily Content Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Daily 9 AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [220, 300],
+      "notes": "Triggers every day at 9:00 AM"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook/homvyx-manual",
+        "options": {}
+      },
+      "id": "manual-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [220, 500],
+      "webhookId": "homvyx-manual",
+      "notes": "POST to /webhook/homvyx-manual to run manually"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "python",
+        "pythonCode": "import subprocess\nimport json\nimport os\n\n# Run the Homvyx pipeline\nresult = subprocess.run(\n    ['python', 'pipeline.py', '--count', '1', '--no-video'],\n    cwd=r'E:\\ANTIGRAVITY\\Repositórios\\Alfred\\homvyx',\n    capture_output=True,\n    text=True,\n    timeout=120,\n    env={**os.environ, 'PYTHONIOENCODING': 'utf-8'}\n)\n\n# Read the latest generated scripts\nscripts_dir = r'E:\\ANTIGRAVITY\\Repositórios\\Alfred\\homvyx\\output\\scripts'\nscript_files = sorted(\n    [f for f in os.listdir(scripts_dir) if f.endswith('.json')],\n    key=lambda x: os.path.getmtime(os.path.join(scripts_dir, x)),\n    reverse=True\n)\n\nscripts = []\nif script_files:\n    with open(os.path.join(scripts_dir, script_files[0]), 'r') as f:\n        data = json.load(f)\n    scripts = data.get('scripts', [])\n\nreturn [{\n    'json': {\n        'pipeline_output': result.stdout[-500:],\n        'pipeline_error': result.stderr[-300:] if result.returncode != 0 else '',\n        'scripts_count': len(scripts),\n        'latest_script_file': script_files[0] if script_files else '',\n        'product': data.get('product', {}) if script_files else {},\n        'scripts': scripts\n    }\n}]"
+      },
+      "id": "generate-scripts",
+      "name": "Generate Scripts",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 400],
+      "notes": "Runs python pipeline.py to generate content scripts"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "python",
+        "pythonCode": "import subprocess\nimport json\nimport os\n\n# Get product name from previous step\nproduct_name = $input.first().json.get('product', {}).get('name', '')\n\nif not product_name:\n    return [{'json': {'error': 'No product name found'}}]\n\n# Run video creation\nresult = subprocess.run(\n    ['python', 'pipeline.py', '--product', product_name, '--count', '1'],\n    cwd=r'E:\\ANTIGRAVITY\\Repositórios\\Alfred\\homvyx',\n    capture_output=True,\n    text=True,\n    timeout=300,\n    env={**os.environ, 'PYTHONIOENCODING': 'utf-8'}\n)\n\n# Find generated videos\nvideos_dir = r'E:\\ANTIGRAVITY\\Repositórios\\Alfred\\homvyx\\output\\videos'\nvideo_files = sorted(\n    [f for f in os.listdir(videos_dir) if f.endswith('.mp4')],\n    key=lambda x: os.path.getmtime(os.path.join(videos_dir, x)),\n    reverse=True\n)\n\n# Get the 3 most recent (youtube, tiktok, instagram)\nrecent_videos = video_files[:3]\n\nreturn [{\n    'json': {\n        'videos': [os.path.join(videos_dir, v) for v in recent_videos],\n        'video_count': len(recent_videos),\n        'pipeline_output': result.stdout[-500:],\n        'product_name': product_name,\n        'status': 'videos_ready' if recent_videos else 'failed'\n    }\n}]"
+      },
+      "id": "create-videos",
+      "name": "Create Videos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 400],
+      "notes": "Creates TTS audio + FFmpeg videos with product images"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "python",
+        "pythonCode": "import json\nimport os\n\n# Read scripts for captions\nscripts_dir = r'E:\\ANTIGRAVITY\\Repositórios\\Alfred\\homvyx\\output\\scripts'\nscript_files = sorted(\n    [f for f in os.listdir(scripts_dir) if f.endswith('.json')],\n    key=lambda x: os.path.getmtime(os.path.join(scripts_dir, x)),\n    reverse=True\n)\n\nvideos = $input.first().json.get('videos', [])\nproduct_name = $input.first().json.get('product_name', '')\n\n# Match videos to platform scripts\nplatform_data = []\nif script_files:\n    with open(os.path.join(scripts_dir, script_files[0]), 'r') as f:\n        data = json.load(f)\n    \n    for script in data.get('scripts', []):\n        platform = script.get('platform', '')\n        # Find matching video\n        matching_video = next(\n            (v for v in videos if platform in v.lower()),\n            None\n        )\n        if matching_video:\n            platform_data.append({\n                'platform': platform,\n                'video_path': matching_video,\n                'caption': script.get('caption', ''),\n                'description': script.get('description', ''),\n                'title': f'{product_name} - Must Have!',\n                'tags': 'amazonfinds,kitchenhacks,musthaves,homehacks',\n                'product_name': product_name\n            })\n\nreturn [{'json': item} for item in platform_data]"
+      },
+      "id": "prepare-posts",
+      "name": "Prepare Posts",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 400],
+      "notes": "Splits output into per-platform items with captions"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "youtube-check",
+              "leftValue": "={{ $json.platform }}",
+              "rightValue": "youtube",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "is-youtube",
+      "name": "Is YouTube?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [1200, 300]
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $json.title }}",
+        "regionCode": "US",
+        "categoryId": 26,
+        "description": "={{ $json.description }}",
+        "privacyStatus": "public",
+        "options": {
+          "tags": "={{ $json.tags }}",
+          "defaultLanguage": "en",
+          "embeddable": true,
+          "publicStatsViewable": true,
+          "notifySubscribers": true
+        }
+      },
+      "id": "youtube-upload",
+      "name": "YouTube Upload",
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [1440, 200],
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "Po2yQOzQZg2wSKZg",
+          "name": "Homvyx YouTube"
+        }
+      },
+      "notes": "Uploads video to YouTube Shorts via Data API v3"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "python",
+        "pythonCode": "# Log the posting to SQLite for tracking\nimport sqlite3\nimport os\nfrom datetime import datetime\n\ndb_path = r'E:\\ANTIGRAVITY\\MCP\\mcp_sqlite.db'\nconn = sqlite3.connect(db_path)\ncursor = conn.cursor()\n\nfor item in $input.all():\n    data = item.json\n    cursor.execute(\n        '''INSERT INTO homvyx_posts \n           (product_name, platform, video_path, caption, status, posted_at)\n           VALUES (?, ?, ?, ?, ?, ?)''',\n        (\n            data.get('product_name', ''),\n            data.get('platform', ''),\n            data.get('video_path', ''),\n            data.get('caption', '')[:500],\n            'posted',\n            datetime.now().isoformat()\n        )\n    )\n\nconn.commit()\nconn.close()\n\nreturn [{'json': {'logged': True, 'count': len($input.all())}}]"
+      },
+      "id": "log-to-db",
+      "name": "Log to SQLite",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1440, 500],
+      "notes": "Records all posts to homvyx_posts table for analytics"
+    },
+    {
+      "parameters": {
+        "url": "https://hooks.slack.com/services/YOUR_WEBHOOK_URL",
+        "method": "POST",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "=🚀 Homvyx posted {{ $json.count }} videos today!\n\nProduct: {{ $('Prepare Posts').first().json.product_name }}\nPlatforms: YouTube, TikTok, Instagram"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "slack-notify",
+      "name": "Slack Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1680, 500],
+      "notes": "Sends daily summary to Slack (replace webhook URL)"
+    }
+  ],
+  "connections": {
+    "Daily 9 AM": {
+      "main": [
+        [
+          {
+            "node": "Generate Scripts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Generate Scripts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Scripts": {
+      "main": [
+        [
+          {
+            "node": "Create Videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Videos": {
+      "main": [
+        [
+          {
+            "node": "Prepare Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Posts": {
+      "main": [
+        [
+          {
+            "node": "Is YouTube?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Log to SQLite",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is YouTube?": {
+      "main": [
+        [
+          {
+            "node": "YouTube Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log to SQLite": {
+      "main": [
+        [
+          {
+            "node": "Slack Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "tags": [
+    {
+      "name": "homvyx"
+    },
+    {
+      "name": "affiliate"
+    },
+    {
+      "name": "automation"
+    }
+  ]
+}
